@@ -1,0 +1,94 @@
+{
+  "name": "ollama-collaborators",
+  "displayName": "ollama-collaborators",
+  "description": "A VSCode extension for two Ollama models to collaborate.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ollama-collaborators.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "ollama-collaborators.startCollaboration",
+        "title": "Start Ollama Collaboration"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Ollama Collaborators Configuration",
+      "properties": {
+        "ollamaCollaborators.agentOne.baseURL": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Base URL for the first Ollama agent (e.g., http://localhost:11434)."
+        },
+        "ollamaCollaborators.agentOne.model": {
+          "type": "string",
+          "default": "llama2",
+          "description": "Model name for the first Ollama agent (e.g., llama2, codellama)."
+        },
+        "ollamaCollaborators.agentTwo.baseURL": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Base URL for the second Ollama agent (e.g., http://anotherhost:11434)."
+        },
+        "ollamaCollaborators.agentTwo.model": {
+          "type": "string",
+          "default": "mistral",
+          "description": "Model name for the second Ollama agent (e.g., mistral, llama2)."
+        },
+        "ollamaCollaborators.files.autoOpenCreatedFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open files after they are created by an agent action."
+        },
+        "ollamaCollaborators.enableAutonomousMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "EXPERIMENTAL: Enable autonomous mode where agents can execute a sequence of actions. Requires careful review of agent plans."
+        },
+        "ollamaCollaborators.autonomous.enableShellExecution": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "EXPERIMENTAL: Allow agents in autonomous mode to request shell command execution. **Security Risk:** Only enable if you understand the implications and trust the source of the agent/plan. Requires `ollamaCollaborators.enableAutonomousMode` to also be true."
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "ollama-collaborators.startCollaboration",
+          "when": "true"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3"
+  }
+}

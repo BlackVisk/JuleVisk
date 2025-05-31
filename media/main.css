@@ -1,0 +1,205 @@
+body {
+    font-family: var(--vscode-font-family);
+    color: var(--vscode-editor-foreground);
+    background-color: var(--vscode-editor-background);
+    padding: 10px;
+}
+.config-section, .chat-area {
+    margin-bottom: 20px;
+}
+.config-section h2 {
+    border-bottom: 1px solid var(--vscode-editor-foreground);
+    padding-bottom: 5px;
+}
+label {
+    display: block;
+    margin-top: 10px;
+}
+input[type="text"], textarea {
+    width: 95%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid var(--vscode-input-border);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border-radius: 4px;
+}
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    cursor: pointer;
+    border-radius: 4px;
+}
+button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+.conversation-display {
+    height: 300px;
+    border: 1px solid var(--vscode-editorWidget-border);
+    padding: 10px;
+    overflow-y: auto;
+    background-color: var(--vscode-textCodeBlock-background);
+    margin-bottom: 10px;
+}
+.message {
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+.user-message {
+    background-color: var(--vscode-list-activeSelectionBackground);
+    text-align: right;
+}
+.agent-message {
+    background-color: var(--vscode-list-inactiveSelectionBackground);
+}
+.agent-name {
+    font-weight: bold;
+}
+
+
+.file-op-success {
+    color: var(--vscode-terminal-ansiGreen); /* Or a general success color */
+    font-style: italic;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    /* background-color: var(--vscode-editorWidget-background); Subtle background */
+}
+
+.file-op-error {
+    color: var(--vscode-terminal-ansiRed); /* Or var(--vscode-errorForeground) */
+    font-style: italic;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    /* background-color: var(--vscode-editorWidget-background); Subtle background */
+}
+
+
+#autonomousTaskSection textarea {
+    height: 80px;
+}
+
+.action-item {
+    padding: 8px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    border: 1px solid var(--vscode-editorWidget-border);
+    background-color: var(--vscode-sideBar-background); /* Slightly different background */
+}
+
+.action-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.action-index {
+    font-weight: bold;
+    margin-right: 8px;
+    color: var(--vscode-textLink-foreground);
+}
+
+.action-type {
+    font-family: var(--vscode-editor-font-family); /* Monospace for action type */
+    background-color: var(--vscode-textCodeBlock-background);
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+.action-status-icon {
+    margin-right: 8px;
+}
+
+.action-description {
+    font-style: italic;
+    color: var(--vscode-descriptionForeground);
+    flex-grow: 1; /* Allow description to take available space */
+}
+
+.action-message small {
+    display: block;
+    color: var(--vscode-foreground); /* Standard text color for messages */
+    margin-top: 2px;
+    padding-left: 20px; /* Indent messages slightly under the header */
+}
+
+.action-output {
+    margin-top: 5px;
+    padding: 5px;
+    background-color: var(--vscode-textCodeBlock-background);
+    border: 1px dashed var(--vscode-editorWidget-border); /* Dashed border for output */
+    border-radius: 3px;
+    max-height: 150px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    color: var(--vscode-editor-foreground);
+    margin-left: 20px; /* Indent output */
+}
+
+.action-output.error-output {
+    color: var(--vscode-errorForeground);
+    border-color: var(--vscode-inputValidation-errorBorder);
+}
+
+/* Status-specific styling for the whole item */
+.action-status-in_progress {
+    /* border-left: 3px solid var(--vscode-terminal-ansiBlue); */
+}
+.action-status-completed {
+    /* border-left: 3px solid var(--vscode-terminal-ansiGreen); */
+}
+.action-status-failed {
+    border-left: 3px solid var(--vscode-terminal-ansiRed);
+    background-color: var(--vscode-errorBackground); /* Subtle background for failed items */
+}
+.action-status-failed .action-header .action-description,
+.action-status-failed .action-message small {
+    color: var(--vscode-errorForeground); /* Make text also indicate error */
+}
+.action-status-cancelled {
+    border-left: 3px solid var(--vscode-terminal-ansiYellow);
+}
+
+
+.overall-plan-status {
+    padding: 6px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--vscode-editorWidget-border);
+    font-size: 1.1em;
+    text-align: center; /* Center the overall status */
+}
+.overall-plan-status strong {
+    text-transform: capitalize;
+}
+
+.agent-info-info {
+    color: var(--vscode-descriptionForeground);
+    padding-left: 20px;
+    font-style: italic;
+}
+.agent-info-warning {
+    color: var(--vscode-list-warningForeground);
+    padding-left: 20px;
+    font-style: italic;
+}
+.agent-info-error {
+    color: var(--vscode-list-errorForeground);
+    padding-left: 20px;
+    font-style: italic;
+}
+
+/* Ensure code actions buttons are styled and spaced */
+.code-actions button {
+    margin-right: 5px;
+    margin-top: 8px; /* Add some space above the buttons */
+}
