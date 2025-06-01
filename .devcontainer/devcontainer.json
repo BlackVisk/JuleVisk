@@ -1,0 +1,70 @@
+{
+    "name": "Ollama Collaborators Dev Container",
+    "dockerComposeFile": "docker-compose.yml", // Path relative to this devcontainer.json file
+    "service": "vscode", // The name of the service in docker-compose.yml for VSCode
+    "workspaceFolder": "/workspace/extension", // Where the project is mounted inside the 'vscode' service
+
+    // Specify the user VSCode Server should run as inside the container
+    "remoteUser": "node",
+
+    // Extensions to install automatically in the dev container.
+    // Our extension will be loaded from the workspaceFolder.
+    // Add other useful extensions for TypeScript/Node.js development.
+    "extensions": [
+        "dbaeumer.vscode-eslint",    // For ESLint, if used in the project
+        "esbenp.prettier-vscode",    // For Prettier, if used
+        "ms-vscode.vscode-typescript-next" // For latest TypeScript features
+        // The extension itself (ollama-collaborators) will be loaded because
+        // the workspaceFolder is its root. If it were a pre-built .vsix,
+        // you could specify its path here.
+    ],
+
+    // Settings to apply inside the dev container
+    "settings": {
+        // Configure Ollama URLs to point to the 'ollama' service from docker-compose
+        "ollamaCollaborators.agentOne.baseURL": "http://ollama:11434",
+        "ollamaCollaborators.agentTwo.baseURL": "http://ollama:11434",
+        // Default model for Agent One (can be any model user has pulled into the ollama service)
+        "ollamaCollaborators.agentOne.model": "llama2",
+        // Default model for Agent Two
+        "ollamaCollaborators.agentTwo.model": "mistral",
+
+        // Optional: Default enable autonomous mode for easier testing in dev container
+        // "ollamaCollaborators.enableAutonomousMode": true,
+        // "ollamaCollaborators.autonomous.enableShellExecution": false, // Keep shell execution off by default for safety
+
+        // General development settings
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.formatOnSave": true,
+        // ESLint settings if you have ESLint configured
+        "eslint.validate": ["typescript", "typescriptreact"],
+        "[typescript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.codeActionsOnSave": {
+                "source.fixAll.eslint": "explicit"
+            }
+        }
+    },
+
+    // Command to run after the container is created.
+    // Installs extension dependencies and compiles TypeScript.
+    "postCreateCommand": "cd /workspace/extension && npm install && npm run compile",
+
+    // Optional: Command to run after VSCode attaches to the container.
+    // "postAttachCommand": "echo 'Attached to Dev Container!'",
+
+    // Optional: Forward additional ports from the container to the host machine.
+    // The Ollama port is already handled by docker-compose.
+    // "forwardPorts": [3000],
+
+    // Optional: Mounts. The main workspace mount is handled by docker-compose.
+    // "mounts": [
+    //  "source=my-volume,target=/some/other/path,type=volume"
+    // ],
+
+    // Ensures that VS Code uses the same Node.js version as specified in the Dockerfile
+    // by setting the remote PATH. (The base typescript-node image usually handles this well)
+    "remoteEnv": {
+        "PATH": ":/usr/local/node/bin"
+    }
+}

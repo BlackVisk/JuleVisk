@@ -208,3 +208,67 @@ This section covers testing the experimental Autonomous Mode where agents can ex
 3.  **Shell Command Denied by User (Test Setup 3):** Action: \`{ "action": "execute_shell_command", "command": "echo Test", "id": "s3" }\`. Click "Deny". -> Verify action "failed" (message about user denial), plan stops.
 
 *(End of Autonomous Mode testing section)*
+
+---
+
+## Development Environment with Dev Containers
+
+This project includes a [VS Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) configuration to provide a consistent and fully set up development environment, including a running Ollama service.
+
+### Prerequisites
+
+*   **Docker Desktop:** Installed and running. (Or Docker Engine with Docker Compose CLI).
+*   **Visual Studio Code:** Installed.
+*   **VS Code "Dev Containers" Extension:** Install the extension (ID: `ms-vscode-remote.remote-containers`) from the VSCode Marketplace.
+
+### Getting Started with the Dev Container
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-name>
+    ```
+    (Replace `<repository-url>` and `<repository-name>` with the actual URL and project directory name.)
+
+2.  **Open in VS Code:**
+    Open the cloned project folder in VS Code.
+
+3.  **Reopen in Container:**
+    *   VS Code should automatically detect the `.devcontainer/devcontainer.json` configuration.
+    *   A notification will appear, usually at the bottom right, saying: "Folder contains a Dev Container configuration file. Reopen to folder in container."
+    *   Click the **"Reopen in Container"** button.
+    *   Alternatively, if you don't see the notification, open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), type `Dev Containers: Reopen in Container`, and select that command.
+
+4.  **Build and Setup:**
+    *   The first time you open the project in the dev container, Docker will build the necessary images and set up the environment as defined in `.devcontainer/docker-compose.yml` and `.devcontainer/Dockerfile`. This might take a few minutes.
+    *   Once built, the `postCreateCommand` (specified in `devcontainer.json`) will run automatically. For this project, it executes `npm install && npm run compile` inside the container to prepare the extension.
+
+### What to Expect
+
+*   You'll be working in a VSCode window that is connected to the development environment running inside a Docker container (the `vscode` service).
+*   The extension's source code will be available in the VSCode Explorer, mounted from your local file system.
+*   The **Ollama Collaborators extension** will be automatically installed and loaded from this source code.
+*   An **Ollama service** will be running in a separate container, accessible to the extension at `http://ollama:11434`. This URL is pre-configured in the dev container's VSCode settings, so the extension should connect to it by default.
+*   You can launch the extension (e.g., by pressing `F5` or using the "Run and Debug" view) and test its features.
+
+### Setting Up Ollama Models in the Dev Container
+
+The Ollama service inside the dev container starts without any models pre-loaded. You'll need to pull the models you want to use.
+
+1.  **Find the Ollama Container Name/ID:**
+    Open a new terminal **on your host machine (not inside VSCode dev container yet)** and run:
+    ```bash
+    docker ps
+    ```
+    Look for the container running the `ollama/ollama` image. Note its name or ID (e.g., `ollama-collaborators-ollama-1`).
+
+2.  **Pull Models into the Ollama Container:**
+    In the same host terminal, execute the following commands, replacing `<ollama_container_name_or_id>` with the actual name/ID you found:
+    ```bash
+    docker exec -it <ollama_container_name_or_id> ollama pull llama2
+    docker exec -it <ollama_container_name_or_id> ollama pull mistral
+    # Pull any other models you wish to test with
+    ```
+    Models downloaded this way will be persisted in the `ollama_data` Docker volume, so you won't lose them when you stop and restart the dev container.
+
+You can now use these model names (e.g., "llama2", "mistral") in the extension's configuration within the dev container.
