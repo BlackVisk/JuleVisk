@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  vscode:
+    build:
+      context: . # Assumes Dockerfile is in .devcontainer, and .devcontainer is the build context
+      dockerfile: Dockerfile # Path relative to the context
+    volumes:
+      # Mount the entire project directory (parent of .devcontainer) to /workspace/extension
+      # This allows VSCode in the container to access the extension's source code.
+      # Adjust '..' if your project structure or where you place docker-compose.yml is different.
+      # If docker-compose.yml is at the root, this would be '.:/workspace/extension'
+      - ..:/workspace/extension:cached
+
+    # Keep the container running
+    command: sleep infinity
+
+    # Run as the 'node' user (matching the Dockerfile)
+    user: node
+
+    # Make sure ollama service is started before this service attempts to connect (optional, but good)
+    depends_on:
+      - ollama
+
+    # Optional: If you need to forward additional ports from the vscode container
+    # ports:
+    #   - "3000:3000"
+
+    # Optional: Environment variables for the vscode service
+    # environment:
+    #   - MY_ENV_VAR=value_for_vscode_service
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # To enable GPU acceleration for Ollama (NVIDIA example):
+    # Ensure your Docker daemon is configured for NVIDIA GPU passthrough.
+    # This might require nvidia-container-toolkit on the host.
+    # Uncomment the following if you have NVIDIA GPU and want to use it:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all # or specify GPU IDs e.g., "device=0,1"
+    #           capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  ollama_data: # Persists Ollama models
